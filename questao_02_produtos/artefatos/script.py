@@ -41,5 +41,8 @@ print("\nStandardized 'actual_category' values:\n", produtos["actual_category"].
 # converting price to float
 produtos["price"] = produtos["price"].str.replace("R$", "").str.strip().astype(float)
 
+
 # removing duplicates
+print("Duplicated values: ", produtos.duplicated().sum())
+print("Linhas duplicadas:\n", produtos[produtos.duplicated()])
 produtos = produtos.drop_duplicates()

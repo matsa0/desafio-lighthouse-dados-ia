@@ -55,4 +55,4 @@ produtos.duplicated().sum()
 produtos = produtos.drop_duplicates()
 ```
 
-Para remover duplicatas, pode-se verificar, com o comando acima as duplicatas de todas as colunas do conjunto de dados, em segida, removê-las. No caso dessa base, **não existia nenhum valor duplicado**, então nenhum registro foi removido.
+Para remover duplicatas, pode-se verificar, com o comando acima as duplicatas de todas as colunas do conjunto de dados, em segida, removê-las. Nesse caso, após a etapa de padronização de categorias do produto, foram geradas **7 linhas duplicadas**.
