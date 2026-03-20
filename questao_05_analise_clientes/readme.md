@@ -1,4 +1,4 @@
-# ✦ Questão 04 - Análise de Clientes 👥    
+# ✦ Questão 05 - Análise de Clientes 👥    
 
 O objetivo dessa questão é mapear os **clientes fiéis da LH Nautical**. O cliente fiel é aquele que possui um gasto médio alto por transação e navega por diversas categorias da loja.
 
