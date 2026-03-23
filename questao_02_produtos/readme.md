@@ -1,13 +1,13 @@
 # ✦ Questão 02 - Trabalhando com produtos 🛒
 
-Nessa tarefa, é necessário trabalhar com a normalização dos dados do dataset de [Produtos](../datasets/produtos_raw.csv) com Pyhton! A normalização, padronização e limpeza são etapas fundamentais que garantem integridade e consistência para os dados que dessejamos trabalhar. Portanto, nessa questão, iremos trabalhar com a biblioteca **Pandas** as seguintes tarefas:
+Nessa tarefa, é necessário trabalhar com a normalização dos dados do dataset de [Produtos](../datasets/produtos_raw.csv) com Pyhton! A normalização, padronização e limpeza são etapas fundamentais que garantem integridade e consistência para os dados que dessejamos trabalhar. Portanto, nessa questão, iremos trabalhar com a biblioteca **Pandas** para atender as premissas obrigatórias desta questão.
 
 ## ⮞ Premissas Obrigatórias
 
 - Utilize apenas o CSV [produtos_raw.csv](../datasets/produtos_raw.csv)
 - Utilize obrigatoriamente Python 3 (nesse caso, **Python 3.11** em um ambiente virtual conda)
 
-**Obs:** Essa limpeza foi realizada no arquivo [script.py](./artefatos/script.py), onde os códigos foram testados e validados.
+**Obs:** Essa limpeza foi realizada no arquivo [script.py](./artefatos/script.py), onde o código foi desenvolvido e devidamente comentado.
  
 
 ### 🏷️ Padronização das categorias
@@ -25,6 +25,15 @@ produtos["actual_category"] = produtos["actual_category"].map(
 
 produtos["actual_category"].value_counts()
 ```
+Para mapear as categorias corretamente, foi observado um pedaço de texto em comum que as mesmas categorias teriam, como "eletr" para **Eletrônicos**, "prop" para **Propulsão** e "ncora" para **Ancoragem**. As variações capturadas para cada pedaço de string são evidenciadas abaixo:
+
+>  **"eletr":** ['eletronicos', 'eletrônicos', 'eletrunicos', 'eletronicoz', 'eletroniscos']
+
+> **"prop":** [ 'propulsao',  'propulção',       'prop', 'propulssão',  'propulsão',
+   'propução',  'propulçao',  'propulsam']
+
+> **"ncora":** [ 'ancoragem',  'encoragem', 'ancoraguem',   'ancorajm',  'ancorajem',
+   'encoragi',  'ancorajen',  'ancoragen']
 
 **O output obtido:**
 ```text
@@ -35,6 +44,8 @@ Eletrônicos    51
 ```
 
 A utilização do `map()` em conjunto com a função **lambda** é interessante por conta da sua legibilidade e flexibilidade lógica. Essa função tem um ótimo desempenho para datasets pequenos, mas em caso de datasets maiores, é mais interessante utilizar uma abordagem vetorizada com `numpy select`, por exemplo.
+
+
 
 ### 🏷️ Conversão dos valores para tipo númerico
 Trabalhar com o tipo correto das variáveis é muito importante para extrair inteligência dos dados corretamente.
