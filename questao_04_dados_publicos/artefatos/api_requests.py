@@ -1,28 +1,28 @@
+# %%
+# ---------------------------------- #
+# Import libs & read sales dataframe #
+# ---------------------------------- #
 import requests
 import pandas as pd 
 
-"""
--- custos_importacao.csv --
-Multiplicar o valor do dolar no dia da venda (start_date) e 
-obter o valor em REAL
-
--- vendas_2023_2024.csv --
-Verificar se o valor total vendido por produto (que está EM 
-REAL) bate com o valor total vendido por produto convertido
-para REAL. 
-
-A TAXA DE CÂMBIO É A MÉDIA DAS COTAÇÕES DE VENDA DO DIA
-"""
-
-import_costs = pd.read_csv('../../questao_03_custos/artefatos/custos_importacao.csv')
+sales_df = pd.read_csv("../../datasets/vendas_2023_2024.csv")
 
 # date must be in the format 'MM-DD-YYYY' for the API request
-import_costs["start_date"] = pd.to_datetime(import_costs["start_date"], format="%d/%m/%Y")
-import_costs["start_date"] = pd.to_datetime(import_costs["start_date"], format="%m-%d-%Y").dt.strftime("%m-%d-%Y")
+sales_df["sale_date"] = pd.to_datetime(sales_df["sale_date"], format="mixed")
+sales_df["sale_date"] = pd.to_datetime(sales_df["sale_date"], format="%m-%d-%Y").dt.strftime("%m-%d-%Y")
+print(sales_df.dtypes)
 
-print(import_costs)
+# %%
+# ----------------------------------------- #
+# Get mean quote through Olinda API (BACEN) #
+# ----------------------------------------- #
+unique_sale_dates = sales_df["sale_date"].unique()
 
 def get_import_costs_quote(date: str) -> float:
+    """
+    Queries the Olinda API for each unique date corresponding to the sales dataset, 
+    and calculates the average of all daily dollar-to-real selling rates.
+    """
     try:
         response = requests.get(f'https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=\'USD\',dataCotacao=\'{date}\')')
         if response.status_code == 200:
@@ -45,10 +45,46 @@ def get_import_costs_quote(date: str) -> float:
     except Exception as e:
         print(f"ERROR: {e}")
 
-# use apply function to get the mean quote for each date in the 'start_date' column
-import_costs["mean_quote"] = import_costs["start_date"].apply(get_import_costs_quote)
-print(import_costs)
+mean_quotes = []
+for date in unique_sale_dates:
+    mean_quote = get_import_costs_quote(date)
+    mean_quotes.append(mean_quote)
 
-#%%
-import_costs.to_csv("custos_importacao_com_cambio.csv", index=False)
+dates_quotes_df = pd.DataFrame({
+    "sale_date": unique_sale_dates,
+    "mean_quote": mean_quotes
+})
 
+# %%
+"""
+BACEN API doesn't returns quotes for saturdays, sundays and holidays.
+So, we can use the mean quote referring to the nearest date of NA rows
+to fill dates without quotes.
+"""
+
+# sort by date to allow correctly use of foward fill
+dates_quotes_df["sale_date"] = pd.to_datetime(dates_quotes_df["sale_date"], format="%m-%d-%Y")
+dates_quotes_df = dates_quotes_df.sort_values("sale_date", ascending=True)
+dates_quotes_df["mean_quote"] = dates_quotes_df["mean_quote"].replace(0, pd.NA)
+
+# foward fill get the last valid value for mean_quote and replace the NA value
+dates_quotes_df["mean_quote"] = dates_quotes_df["mean_quote"].ffill()
+# if there still NA values, fill with the next mean_quote
+dates_quotes_df["mean_quote"] = dates_quotes_df["mean_quote"].bfill()
+print(dates_quotes_df)
+print(dates_quotes_df.isna().sum())
+
+
+# %%
+# ------------------------------- #
+# Saves complete merged dataframe #
+# ------------------------------- #
+sales_df["sale_date"] = pd.to_datetime(sales_df["sale_date"], format="%m-%d-%Y")
+
+sales_with_quotes = pd.merge(
+    sales_df,
+    dates_quotes_df,
+    on="sale_date",
+    how="left"
+)
+sales_with_quotes.to_csv("vendas_com_cambio.csv", index=False)
