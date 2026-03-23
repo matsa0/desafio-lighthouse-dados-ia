@@ -1,6 +1,10 @@
 # ✦ Questão 03 - Custos de importação 📥💲
 
-Nessa terceira questão, iremos trabalhar com o arquivo [custos de importação](../datasets/custos_importacao.json), um arquivo JSON que possui dados a respeito de um produto e seu preços ao longo do tempo, um arquivo muito rico, que permite várias análises. O escopo dessa questão requisita as seguintes tarefas abaixo:
+Nessa terceira questão, iremos trabalhar com  [custos de importação](../datasets/custos_importacao.json), um arquivo JSON que possui dados a respeito **de um produto e sua variação de preços em dólar ao longo do tempo**.
+
+Saber trabalhar com JSON é de extrema importância pois é um formato que se tornou um **padrão** para troca de dados na Internet, APIs de dados e também armazenamento de dados semiestruturados. 
+
+O escopo dessa questão tem como requisitos as seguintes premissas abaixo:
 
 ## ⮞ Premissas Obrigatórias
 - Utilize apenas o JSON [custos_importacao.json](../datasets/custos_importacao.json)
@@ -31,7 +35,7 @@ with open(file_path, "r") as f:
     # saves the DataFrame to a CSV file
     import_costs_df.to_csv("custos_importacao.csv", index=False)
 ```
-O que é interessante ressaltar nessa abordagem, é o uso da função **explode** do `Pandas`. Ao trasnformar o JSON para DataFrame, a colunas **historic_data** vem em formato de lista, assim como representado abaixo:
+O que é interessante ressaltar nessa abordagem, é o uso da função **explode** do `Pandas`. Ao transformar o JSON para DataFrame, a coluna **historic_data** vem em formato de lista, assim como representado abaixo:
 
 ```text 
 [{'start_date': '10/08/2016', 'usd_price': 10583.63'}, {'start_date': '15/06/2018', 'usd_price': 8778.36'}, ...]
