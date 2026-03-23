@@ -1,17 +1,20 @@
+# ----------------------------------------- #
+# Imports and creating products sales table #
+# ----------------------------------------- #
 import duckdb as db
 import pandas as pd
 
 products_sales_df = pd.read_csv("products_sales.csv")
+con = db.connect()
+con.execute("CREATE TABLE products_sales AS SELECT * FROM products_sales_df")
 
 # ----------------------- #
 # Calculating Mean Ticket #
 # ----------------------- #
-
-# duckdb connection
-con = db.connect()
-con.execute("CREATE TABLE products_sales AS SELECT * FROM products_sales_df")
-
 def execute_query(query: str, con:db.DuckDBPyConnection = con) -> pd.DataFrame:
+    """
+    Executes the query and converts to a pandas dataframe
+    """
     return con.execute(query).df()
 
 ranking_query = """
@@ -31,12 +34,11 @@ ranking_query = """
 ranking_result_df = execute_query(ranking_query)
 print(ranking_result_df)
 
-ranking_result_df.to_csv("mean_ticket_ranking.csv", index=False)
+ranking_result_df.to_csv("ranking_ticket_medio.csv", index=False)
 
 # -------------------------------------------------------------------------------- #
 # Among top 10 clients, which category have the largest amount of items purchased? #
 # -------------------------------------------------------------------------------- #
-
 categories_query = """
     SELECT
         actual_category,
@@ -58,4 +60,4 @@ categories_query = """
 categories_revenue_df = execute_query(categories_query)
 print(categories_revenue_df)
 
-categories_revenue_df.to_csv("categories_top10_revenue.csv", index=False)
+categories_revenue_df.to_csv("quantidade_comprada_por_categoria.csv", index=False)

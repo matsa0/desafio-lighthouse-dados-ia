@@ -1,18 +1,20 @@
+# -------------------------------------- #
+# Imports and reading products dataframe #
+# -------------------------------------- #
 import pandas as pd 
 import json
 
-products = pd.read_csv("../../datasets/produtos_raw.csv")
+products_df = pd.read_csv("../../datasets/produtos_raw.csv")
 
-print("Categorias antes da manipulação:\n", products["actual_category"].value_counts())
+print("Categorias antes da manipulação:\n", products_df["actual_category"].value_counts())
 
 # ------------------------------------ #
 # standardizing actual_category values #
 # ------------------------------------ #
-
-products["actual_category"] = products["actual_category"].str.lower().str.strip().str.replace(" ", "")
+products_df["actual_category"] = products_df["actual_category"].str.lower().str.strip().str.replace(" ", "")
 
 # mapping actual_category values to standardized categories
-products["actual_category"] = products["actual_category"].map(
+products_df["actual_category"] = products_df["actual_category"].map(
     lambda x: "Eletrônicos" if "eletr" in x else (
         "Propulsão" if "prop" in x else (
             "Ancoragem" if "ncora" in x else "Outros"
@@ -20,19 +22,18 @@ products["actual_category"] = products["actual_category"].map(
     )
 )
 
-print("\nStandardized 'actual_category' values:\n", products["actual_category"].value_counts())
+print("\nStandardized 'actual_category' values:\n", products_df["actual_category"].value_counts())
 
 # converting price to float
-products["price"] = products["price"].str.replace("R$", "").str.strip().astype(float)
+products_df["price"] = products_df["price"].str.replace("R$", "").str.strip().astype(float)
 # droping duplicates
-products = products.drop_duplicates()
+products_df = products_df.drop_duplicates()
 
-print("Após remoção de duplicatas: ", products["actual_category"].value_counts())
+print("Após remoção de duplicatas: ", products_df["actual_category"].value_counts())
 
 # --------------------------- #
 # Obtaining data from clients #
 # --------------------------- #
-
 json_file_path = "../../datasets/clientes_crm.json"
 
 try:
@@ -51,7 +52,6 @@ print(clients_crm_df.isna().sum())
 # ------------------------------------------- #
 # Reading sales dataset to merge with Clients # 
 # ------------------------------------------- #
-
 sales = pd.read_csv("../../datasets/vendas_2023_2024.csv")
 print("Number of unique clients in Sales dataframe: ", sales["id_client"].nunique())
 print(f"Min client ID(Sales): {sales['id_client'].min()}\nMax client ID(Sales): {sales['id_client'].max()}")
@@ -71,10 +71,9 @@ print(sales_df.columns)
 # ------------------------------------------------ #
 # Merging previous merged dataframe with Products  #
 # ------------------------------------------------ #
-
 products_sales_df = pd.merge(
     sales_df,
-    products.rename(columns={"code": "id_product"}),
+    products_df.rename(columns={"code": "id_product"}),
     how="left",
     on="id_product"
 ).reset_index(drop=True)
@@ -84,4 +83,4 @@ print(products_sales_df.isna().sum())
 print(products_sales_df.duplicated().sum())
 
 # saving merged dataset
-products_sales_df.to_csv("products_sales.csv", index=False)
+products_sales_df.to_csv("produtos_vendidos.csv", index=False)

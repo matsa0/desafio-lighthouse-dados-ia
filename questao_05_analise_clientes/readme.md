@@ -1,6 +1,6 @@
 # ✦ Questão 05 - Análise de Clientes 👥    
 
-O objetivo dessa questão é mapear os **clientes fiéis da LH Nautical**. O cliente fiel é aquele que possui um gasto médio alto por transação e navega por diversas categorias da loja.
+O objetivo dessa questão é mapear os **clientes fiéis da LH Nauticals**. O cliente fiel é aquele que possui um gasto médio alto por transação e navega por diversas categorias da loja. Aqui é interessante destacar o **Ticket Médio**, que significa na prática **Quanto, em média, um cliente gasta por compra**. Essa métrica é importante para interpretar clientes fiéis pois um cliente pode ter uma compra muito alta, porém não ter frequência de compra. Agora, um cliente que compra várias vezes, gasta bastante nas compras e compra em várias categorias **é um cliente fiel de verdade**. 
 
 
 ## ⮞ Premissas Obrigatórias 
@@ -35,7 +35,7 @@ O objetivo dessa questão é mapear os **clientes fiéis da LH Nautical**. O cli
 
 - **Quais são os 10 clientes com maior Ticket médio que estão em 3 ou mais categorias?**
 
-    Para a realização das duas tarefas acima, foi necessário transformar o json de clientes para um dataframe, realizar o merge com dataset de vendas e posteriormente, com o dataset de produtos. Dessa forma, obtém-se um dataset completo, onde é possível realizar a seguinte query:
+    Para a realização das duas tarefas acima, foi necessário transformar o JSON de clientes para um dataframe, realizar o merge com dataset de vendas e posteriormente, com o dataset de produtos. Dessa forma, obtém-se um dataset completo, onde é possível realizar a seguinte query:
 
     ```sql
     -- products_sales representa a base de dados 'mergeada'
@@ -51,6 +51,21 @@ O objetivo dessa questão é mapear os **clientes fiéis da LH Nautical**. O cli
     ORDER BY mean_ticket DESC, id_client ASC
     LIMIT 10;
     ```
+
+A query acima já nos retorna o cálculo do **ticket médio**, considera a **diversidade de categorias** que o cliente compra, faz o **desempate** e filtra o **top 10**. O resultado dela, é a seguinte tabela:
+
+| ID do Cliente | Faturamento Total (R$) | Número de Compras | Ticket Médio (R$) | Diversidade de Categorias |
+|--------------:|:----------------------:|:------------------:|:------------------:|---------------------------:|
+| 47            | 64.003.343,75         | 190               | 336.859,70        | 3                          |
+| 42            | 72.187.369,50         | 222               | 325.168,33        | 3                          |
+| 9             | 66.788.855,35         | 218               | 306.370,90        | 3                          |
+| 22            | 59.581.398,75         | 198               | 300.916,16        | 3                          |
+| 2             | 65.652.931,35         | 220               | 298.422,42        | 3                          |
+| 28            | 60.826.837,25         | 204               | 298.170,77        | 3                          |
+| 46            | 59.126.834,35         | 199               | 297.119,77        | 3                          |
+| 38            | 57.093.331,15         | 195               | 292.786,31        | 3                          |
+| 36            | 62.791.038,15         | 215               | 292.051,34        | 3                          |
+| 5             | 58.592.802,70         | 202               | 290.063,38        | 3                          |
 
 ### 🏷️ Para este grupo específico de 10 clientes, identifique qual categoria de produto concentra a maior quantidade total de itens comprados (sum(qtd)).
 
