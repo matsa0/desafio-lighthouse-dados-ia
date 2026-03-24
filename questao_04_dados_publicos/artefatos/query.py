@@ -30,7 +30,7 @@ query = """
             END AS transaction_loss
         FROM sales_quotes
     )
-    
+
     SELECT 
         id_product,
         product_name,
@@ -70,6 +70,7 @@ print("Produto com maior prejuío absoluto:")
 print(higher_absolute_loss[["id_product", "product_name", "total_loss_pct"]])
 
 loss_products = products_losses_df[products_losses_df["total_loss"] > 0]
+loss_products.to_csv("produtos_com_prejuizo.csv", index=False)
 
 ##### -------------------------------------------------------------- #####
 
