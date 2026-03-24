@@ -118,6 +118,8 @@ print(january_2024_predictions)
 test_df["prediction"] = january_2024_predictions
 mae = round(mean_absolute_error(test_df["qtd"], test_df["prediction"]), 2)
 display(test_df) # type: ignore
+test_df.to_csv("real_x_previsao.csv", index=False)
+
 print("Mean Absolute Error (MAE): ", mae)
 # %%
 non_zero_days = test_df[test_df["qtd"] > 0]
