@@ -56,6 +56,7 @@ cosine_similarity_df = pd.DataFrame(
 )
 
 print(cosine_similarity_df)
+cosine_similarity_df.to_csv("sim_cosseno_produto_alvo.csv", index="id_product")
 
 # %%
 # ---------------------------------------- #
