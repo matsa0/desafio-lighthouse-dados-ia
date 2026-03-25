@@ -6,6 +6,7 @@ import streamlit as st
 import plotly.express as px
 from sklearn.metrics import mean_absolute_error
 import json
+from pathlib import Path
 
 # ------------------ #
 # Page configuration #
@@ -20,32 +21,38 @@ st.set_page_config(
 # ----------------------------- #
 # Data extraction from datasets 
 # ----------------------------- #
+BASE_DIR = Path(__file__).resolve().parent
+ROOT_DIR = BASE_DIR.parent.parent
+
 @st.cache_data
 def load_daily_sales_data():
-    df = pd.read_csv("vendas_diarias.csv")
+    df = pd.read_csv(BASE_DIR / "vendas_diarias.csv")
     df["sale_date"] = pd.to_datetime(df["sale_date"])
     return df
 
 @st.cache_data
 def load_revenue_dow_data():
-    return pd.read_csv("../../questao_06_calendario/artefatos/media_receita_dias_semana.csv")
+    return pd.read_csv(ROOT_DIR / "questao_06_calendario/artefatos/media_receita_dias_semana.csv")
 
 @st.cache_data
 def load_loss_products_data():
-    return pd.read_csv("../../questao_04_dados_publicos/artefatos/produtos_com_prejuizo.csv")
+    return pd.read_csv(ROOT_DIR / "questao_04_dados_publicos/artefatos/produtos_com_prejuizo.csv")
 
 @st.cache_data
 def load_pred_data():
-    df = pd.read_csv("../../questao_07_previsao_demanda/artefatos/real_x_previsao.csv")
+    df = pd.read_csv(ROOT_DIR / "questao_07_previsao_demanda/artefatos/real_x_previsao.csv")
     df["sale_date"] = pd.to_datetime(df["sale_date"])
     return df.rename(columns={"qtd": "Real", "prediction": "Previsto"})
 
 @st.cache_data
 def load_clients_data():
-    df = pd.read_csv("../../questao_05_analise_clientes/artefatos/ranking_ticket_medio.csv")
-    with open("../../datasets/clientes_crm.json") as f:
+    df = pd.read_csv(ROOT_DIR / "questao_05_analise_clientes/artefatos/ranking_ticket_medio.csv")
+    
+    with open(ROOT_DIR / "datasets/clientes_crm.json") as f:
         crm = pd.DataFrame(json.load(f))
+    
     df = df.merge(crm.rename({"code": "id_client"}, axis=1), on="id_client")
+    
     return df.rename(columns={
         "annual_revenue": "Faturamento",
         "frequency": "Frequência",
@@ -56,15 +63,15 @@ def load_clients_data():
 
 @st.cache_data
 def load_products_data():
-    df = pd.read_csv("../../questao_05_analise_clientes/artefatos/produtos_vendidos.csv")
+    df = pd.read_csv(ROOT_DIR / "questao_05_analise_clientes/artefatos/produtos_vendidos.csv")
     df["sale_date"] = pd.to_datetime(df["sale_date"], format="mixed")
     return df.rename(columns={"name": "Produto"})
 
 @st.cache_data
 def load_cos_similarity_data():
-    df = pd.read_csv("../../questao_08_sistema_recomendacao/artefatos/sim_cosseno_produto_alvo.csv", index_col=0)
+    df = pd.read_csv(ROOT_DIR / "questao_08_sistema_recomendacao/artefatos/sim_cosseno_produto_alvo.csv", index_col=0)
     df.columns = df.columns.astype(int)
-    return df   
+    return df  
 
 # ------------------- #
 # Auxiliary functions #
