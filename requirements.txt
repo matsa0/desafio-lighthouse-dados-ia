@@ -7,4 +7,4 @@ requests
 scikit-learn
 plotly
 streamlit
-altair==4.2.2
+altair
