@@ -12,7 +12,7 @@ A análise foi estruturada em quatro pilares principais:
 3. **Previsão de Demanda:** Comparativo histórico entre o volume real e a previsão do modelo para janeiro de 2024, mensurado através do Erro Médio Absoluto (MAE).
 4. **Comportamento e Recomendação de Clientes:** Cruzamento de dados transacionais com CRM para traçar o perfil de clientes de elite (Ticket Médio, Frequência, Diversidade) e construção de um sistema de recomendação de produtos baseado em Similaridade de Cosseno.
 
-
+### 🔴 Clique [aqui](https://youtu.be/Vi4QhS4UWQc) para ver o vídeo de apresentação do dashboard
 ---
 
 ## 🛠️ Ferramentas Utilizadas

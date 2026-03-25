@@ -2,6 +2,7 @@
 
 Este diretório contém a interface visual do projeto, desenvolvida em Streamlit. O dashboard consolida os resultados das análises de dados, cruzamentos de bases e modelos preditivos em um ambiente interativo para t**omada de decisão de negócios**.
 
+## 🔴 Clique [aqui](https://youtu.be/Vi4QhS4UWQc) para ver o vídeo de apresentação do dashboard
 
 ## 🚀 Como Executar o Dashboard
 
