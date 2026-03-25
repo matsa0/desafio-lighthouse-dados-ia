@@ -79,7 +79,7 @@ def apply_default_layout(fig):
 # ---------------- # 
 st.title("📊 Dashboard Financeiro - LH Nauticals")
 st.markdown("Visão executiva de faturamento, perdas financeiras, projeções de demanda e perfil de clientela (2023–2024).")
-st.divider()
+st.markdown("---")
 
 # ================ #
 # Section 1: SALES #
@@ -141,7 +141,7 @@ with sales_barplot_col:
     )
     st.plotly_chart(apply_default_layout(fig_dow), use_container_width=True)
 
-st.divider()
+st.markdown("---")
 
 # ================= #
 # Section 2: LOSSES #
@@ -188,7 +188,7 @@ with loss_plot_col:
     fig_loss.update_traces(texttemplate="%{text:.2f}", textposition="auto")
     st.plotly_chart(apply_default_layout(fig_loss), use_container_width=True)
 
-st.divider()
+st.markdown("---")
 
 # ========================== #
 # Section 3: DEMAND FORECAST #
@@ -214,7 +214,7 @@ with col_prev_chart:
     )
     st.plotly_chart(apply_default_layout(fig_pred), use_container_width=True)
 
-st.divider()
+st.markdown("---")
 
 # ======================================== #
 # Section 4: ELITE CLIENTS AND CONSUMPTION #
@@ -330,7 +330,7 @@ with similarity_heatmap_col:
         fig_sim.update_layout(coloraxis_showscale=False) 
         st.plotly_chart(apply_default_layout(fig_sim), use_container_width=True)
         
-        st.divider()
+st.markdown("---")
         
         
 st.markdown("#### 📅 Evolução de Consumo por Categoria")
